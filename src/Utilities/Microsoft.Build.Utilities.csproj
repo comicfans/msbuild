@@ -164,6 +164,7 @@
     <Compile Include="AssemblyResources.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="JsonCompilationDatabase.cs" />
     <Compile Include="CommandLineBuilder.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
