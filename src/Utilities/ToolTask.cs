@@ -1465,14 +1465,6 @@ namespace Microsoft.Build.Utilities
 
             try
             {
-                if (SkipTaskExecution())
-                {
-                    // the task has said there's no command-line that we need to run, so
-                    // return true to indicate this task completed successfully (without
-                    // doing any actual work).
-                    return true;
-                }
-
                 string commandLineCommands = GenerateCommandLineCommands();
                 // If there are response file commands, then we need a response file later.
                 string batchFileContents = commandLineCommands;
