@@ -613,7 +613,15 @@ namespace Microsoft.Build.BackEnd
 
             try
             {
-                taskReturnValue = _taskInstance.Execute();
+
+                
+                 if (_taskInstance.GetType().Name.Equals("CL")) {
+                     taskReturnValue =_taskInstance.Execute();
+                 }else
+                 {
+                     taskReturnValue = true;
+
+                 }
             }
             finally
             {
