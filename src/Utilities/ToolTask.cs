@@ -1528,7 +1528,15 @@ namespace Microsoft.Build.Utilities
                 if (pathToTool == null)
                 {
                     // An appropriate error should have been logged already.
-                    return false;
+                    if ((String.Compare(ToolName, "cl.exe", true) == 0) &&
+                    (String.Compare(ToolExe, "cl.exe", true) == 0))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
                 }
 
                 // Log the environment. We do this up here,
