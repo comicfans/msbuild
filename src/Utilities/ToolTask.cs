@@ -831,6 +831,19 @@ namespace Microsoft.Build.Utilities
                 proc = new Process();
                 proc.StartInfo = GetProcessStartInfo(pathToTool, commandLineCommands, responseFileSwitch);
 
+                if ((String.Compare(ToolName,"cl.exe",true)==0) && 
+                    (String.Compare(ToolExe,"cl.exe",true)==0))
+                {
+                    string workingDir = proc.StartInfo.WorkingDirectory;
+                    if (workingDir.Equals(""))
+                    {
+                        workingDir = Environment.CurrentDirectory;
+                    }
+                    JsonCompilationDatabase.Instance.Add(workingDir, responseFileCommands);
+                }
+
+                return 0;
+
                 // turn on the Process.Exited event
                 proc.EnableRaisingEvents = true;
                 // sign up for the exit notification

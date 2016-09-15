@@ -161,26 +161,21 @@
     <!-- This is to enable CodeMarkers in MSBuild.exe -->
     <!-- Win32 RC Files -->
     <RCResourceFile Include="native.rc" />
-
     <!-- Resource Files -->
-
     <EmbeddedResource Include="Resources\Strings.resx">
       <LogicalName>$(AssemblyName).Strings.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-
     <EmbeddedResource Include="..\Shared\Resources\Strings.shared.resx">
       <Link>Resources\Strings.shared.resx</Link>
       <LogicalName>$(AssemblyName).Strings.shared.resources</LogicalName>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-
     <!-- Content Files -->
     <Content Include="MSBuild.ico" />
     <Content Include="MSBuild.rsp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-
   </ItemGroup>
   <ItemGroup>
     <!-- File for Assemblies we depend on -->
@@ -189,6 +184,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.XML" />
     <Reference Include="System.Configuration" />
+    <ProjectReference Include="..\Utilities\Microsoft.Build.Utilities.csproj">
+      <Project>{828566ee-6f6a-4ef4-98b0-513f7df9c628}</Project>
+      <Name>Microsoft.Build.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XMakeBuildEngine\Microsoft.Build.csproj">
       <Project>{16CD7635-7CF4-4C62-A77B-CF87D0F09A58}</Project>
       <Name>Microsoft.Build</Name>

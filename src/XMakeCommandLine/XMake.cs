@@ -206,6 +206,8 @@ namespace Microsoft.Build.CommandLine
                 DumpCounters(false /* log to console */);
             }
 
+            Utilities.JsonCompilationDatabase.Instance.Save();
+
             return exitCode;
         }
 
