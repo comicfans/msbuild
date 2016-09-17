@@ -2,13 +2,11 @@
 For precise semantic code complete, you need compile_commands.json for YouCompleteMe(also RTags) which records compile flags for every source file. [bear](https://github.com/rizsotto/Bear) or [btrace](https://github.com/rprichard/sourceweb) can generate compile_commands.json from existng none-CMake based project (mostly for UNIX-liked OS).  And this modified MSBuild is for existing MSVC based project(mostly for Windows).
 
 # How it work:
-msbuild project in memory is built up by manyu 'task', Microsof.Build.CPPTasks.CL is just for compiling, this components is not open sourced, but its most important logic is just in base class ToolTask (which is part of Opensourced msbuild).this mod just hook into ToolTask, ignore none-CL task(no help),ignoer skip-rebuild-check(you can still get flags even if project is built), skip actually build command, and write a msbuild_compile_commands.json in msbuild current working directory. 
+msbuild project in memory is built up by manyu 'task', Microsof.Build.CPPTasks.CL is just for compiling, this components is not open sourced, but its most important logic is just in base class ToolTask (which is part of Opensourced msbuild).this mod just hook into ToolTask, ignore none-CL task(no help),ignoer skip-rebuild-check(you can still get flags even if project is built), skip actually build command, and write a compile_commands.json in msbuild current working directory. for use with clang ,this adds "--driver-mode=cl" to every commands
 
 # This is not complete!
-msbuild_compile_commands.json is not acceptable by YouCompleteMe(libclang ,actually).These compile flags is for MSVC CL,not clang. You may heared
-that clang-cl supports msvc cl arguments, but this is not for libclang. clang-cl is a 'drive' which translate msvc style argments to clang acceptable style (which libclang actullay needed), so we need another hack: modified clang-cl to convert msvc style arguments(which already in msbuild_compile_commands.json) to clang style compile_commands.json, which is none-exists (currently). 
+YouCompleteMe throws msvc style parameters incorrectly .you need YouCompleteMe with ycmd replaced [third_party/ycmd](https://github.com/comicfans/ycmd.git) . And you need to build newest clang, not the one YouCompleteMe auto downloaded (clang has bug that can not found include path, fixed in 277005 but not 3.9 binary release)
 
-When both pieces worked, any existing MSVC project can be converted to a valid compile_commands.json ,makes any libclang base tool workable (not only YouCompleteMe)
 
 
 # How to build and run:
@@ -17,7 +15,7 @@ just build as original msbuild (following), some tips:
 2. Build whole soluation, not only msbuild project. some basic task defined in other projects is not built as msbuild's dependencies.
 3. Now you can run this msbuild, but it will lookup tracker.exe in same directory (which built msbuild.exe in). you need to copy it (mostly under C:\program files(x86)\msbuild\14.0\bin  depends on your bitness or version) to directory which your built msbuild.exe in. you must copy correct bitness version (you build x86 version msbuild, so copy x86 version tracker.exe). 
 4. tracker.exe will load FileTracker32/64.dll in same directory ,so you must also copy these files. I'm lasy, so I just copy everything none-conflict from C:\Program Files (x86)\MSBuild\14.0\Bin
-5. now you can run this msbuild to build your project or soluation, it will gives msbuild_compile_commads.json in current working dir.
+5. now you can run this msbuild to build your project or soluation, it will gives compile_commads.json in current working dir.
 
 
 # Microsoft.Build (MSBuild)

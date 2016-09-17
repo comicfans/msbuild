@@ -26,9 +26,12 @@ namespace Microsoft.Build.Utilities
             {
                 String[] tokens=cmd.Split(' ');
 
+                String file = tokens[tokens.Length - 1];
+
+
                 _items.Add(new Item {
                     directory = dir,
-                    command = cmd,
+                    command = "--driver-mode=cl "+cmd.Substring(0,cmd.Length-file.Length),
                     file = tokens[tokens.Length - 1]
                 });
             }
@@ -38,8 +41,7 @@ namespace Microsoft.Build.Utilities
         {
             lock (this)
             {
-
-                System.IO.File.WriteAllText("msbuild_compile_commands.json",
+                System.IO.File.WriteAllText("compile_commands.json",
                     JsonConvert.SerializeObject(_items.ToArray(), Formatting.Indented));
             }
         }
