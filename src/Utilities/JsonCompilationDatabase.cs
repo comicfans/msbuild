@@ -24,16 +24,47 @@ namespace Microsoft.Build.Utilities
         {
             lock (this)
             {
-                String[] tokens=cmd.Split(' ');
+                //do not support src file name with namespace inside
+                List<String> flags=new List<String>(cmd.Split(' '));
 
-                String file = tokens[tokens.Length - 1];
+                List<String> srcs = new List<String>();
+
+                //back search all source file 
+
+                int i = flags.Count- 1;
+                for(; i >= 0; --i)
+                {
+                    String flag = flags[i];
+                    if (!System.IO.File.Exists(System.IO.Path.Combine(dir, flag)))
+                    {
+                        break;
+                    }
+
+                    //this is src file
+                    srcs.Add(flag);
+                    flags.RemoveAt(i);
+                }
+
+                //consider if last file name is a define command
+                if (flags.Last().Equals(@"\D"))
+                {
+                    String last = srcs.Last();
+                    srcs.RemoveAt(srcs.Count - 1);
+                    flags.Add(last);
+                }
 
 
-                _items.Add(new Item {
-                    directory = dir,
-                    command = "--driver-mode=cl "+cmd.Substring(0,cmd.Length-file.Length),
-                    file = tokens[tokens.Length - 1]
-                });
+                String finalFlags = "--driver-mode=cl " + String.Join(" ", flags);
+
+                foreach (String f in srcs)
+                {
+                    _items.Add(new Item
+                    {
+                        directory = dir,
+                        command = finalFlags,
+                        file = f
+                    });
+                }
             }
         }
 
