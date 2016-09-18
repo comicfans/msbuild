@@ -1098,6 +1098,10 @@ namespace Microsoft.Build.Utilities
         /// <param name="correspondingOutputs">Outputs that correspond ot the sources (used for same file processing)</param>
         public void RemoveDependenciesFromEntryIfMissing(ITaskItem[] source, ITaskItem[] correspondingOutputs)
         {
+            if (source == null)
+            {
+                return;
+            }
             if (correspondingOutputs != null)
             {
                 ErrorUtilities.VerifyThrowArgument(source.Length == correspondingOutputs.Length, "Tracking_SourcesAndCorrespondingOutputMismatch");

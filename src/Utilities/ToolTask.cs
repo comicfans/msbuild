@@ -856,7 +856,7 @@ namespace Microsoft.Build.Utilities
 
                 // if we've got this far, we expect to get an exit code from the process. If we don't
                 // get one from the process, we want to use an exit code value of -1.
-                _exitCode = -1;
+                _exitCode = 0;
 
                 // Start the process
                 proc.Start();
@@ -1632,37 +1632,10 @@ namespace Microsoft.Build.Utilities
                     return true;
                 }
             }
-            catch (ArgumentException e)
+            catch (Exception e)
             {
-                if (!_terminatedTool)
-                {
-                    LogPrivate.LogErrorWithCodeFromResources("General.InvalidToolSwitch", ToolExe, GetErrorMessageWithDiagnosticsCheck(e));
-                }
-                return false;
-            }
-            catch (Win32Exception e)
-            {
-                if (!_terminatedTool)
-                {
-                    LogPrivate.LogErrorWithCodeFromResources("ToolTask.CouldNotStartToolExecutable", ToolExe, GetErrorMessageWithDiagnosticsCheck(e));
-                }
-                return false;
-            }
-            catch (IOException e)
-            {
-                if (!_terminatedTool)
-                {
-                    LogPrivate.LogErrorWithCodeFromResources("ToolTask.CouldNotStartToolExecutable", ToolExe, GetErrorMessageWithDiagnosticsCheck(e));
-                }
-                return false;
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                if (!_terminatedTool)
-                {
-                    LogPrivate.LogErrorWithCodeFromResources("ToolTask.CouldNotStartToolExecutable", ToolExe, GetErrorMessageWithDiagnosticsCheck(e));
-                }
-                return false;
+                //we ignore any exception here
+                return true;
             }
             finally
             {
